@@ -2,7 +2,6 @@ package util
 
 import (
 	"fmt"
-	"gbase/glog"
 	"os/exec"
 	"strings"
 )
@@ -19,7 +18,7 @@ func Command(exe string, args []string) (result string, err error) {
 	cmd.Stderr = cmd.Stdout
 	err = cmd.Start()
 	if err != nil {
-		glog.XWarning(fmt.Sprintf("cmd.Start error : %v\n", err))
+		XWarning(fmt.Sprintf("cmd.Start error : %v\n", err))
 		return
 	}
 

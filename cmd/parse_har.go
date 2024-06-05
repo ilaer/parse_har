@@ -3,8 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	gcmd "gbase/cmd"
-	"gbase/glog"
+	"ghar/util"
 	"io/ioutil"
 	"net/url"
 	"os"
@@ -18,7 +17,7 @@ func (m *Har) ParseHar(harFilePath string) (exportPath string, err error) {
 
 	data, err := ioutil.ReadFile(harFilePath)
 	if err != nil {
-		glog.XWarning(fmt.Sprintf("ParseHar ioutil.ReadFile error : %v\n", err))
+		util.XWarning(fmt.Sprintf("ParseHar ioutil.ReadFile error : %v\n", err))
 		return exportPath, err
 
 	}
@@ -28,20 +27,20 @@ func (m *Har) ParseHar(harFilePath string) (exportPath string, err error) {
 	jsonData := map[string]interface{}{}
 	err = json.Unmarshal(data, &jsonData)
 	if err != nil {
-		glog.XWarning(fmt.Sprintf("ParseHar json.Unmarshal error : %v\n", err))
+		util.XWarning(fmt.Sprintf("ParseHar json.Unmarshal error : %v\n", err))
 		return exportPath, err
 	}
 
 	staticURLList := []string{}
 	if jsonData["log"] == nil {
-		glog.XWarning(fmt.Sprintf("ParseHar log error : %v\n", err))
+		util.XWarning(fmt.Sprintf("ParseHar log error : %v\n", err))
 		return exportPath, err
 	}
 	logJsonData := jsonData["log"].(map[string]interface{})
 
 	if logJsonData["entries"] == nil {
 		fmt.Printf("%v\n", logJsonData["entries"])
-		glog.XWarning(fmt.Sprintf("ParseHar jsonData entries error : %v\n", err))
+		util.XWarning(fmt.Sprintf("ParseHar jsonData entries error : %v\n", err))
 		return exportPath, err
 	}
 	for _, entrie := range logJsonData["entries"].([]interface{}) {
@@ -63,7 +62,7 @@ func (m *Har) ParseHar(harFilePath string) (exportPath string, err error) {
 		parsedURLPath := strings.ReplaceAll(parsedURL.Path[1:], "/", "_")
 		ext := parsedURLPath[len(parsedURLPath)-6 : len(parsedURLPath)]
 		if strings.Contains(ext, ".jsc") || strings.Contains(ext, ".js") || strings.Contains(ext, ".sc") {
-			if gcmd.InArray(requestURL, staticURLList) == false {
+			if util.InArray(requestURL, staticURLList) == false {
 				staticURLList = append(staticURLList, requestURL)
 			}
 
