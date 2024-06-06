@@ -10,7 +10,7 @@ import (
 func (m *Har) MainWindow() {
 	ap := app.New()
 
-	nw := ap.NewWindow("la")
+	nw := ap.NewWindow("har解析提取工具")
 
 	tabs := container.NewAppTabs()
 	tabs.Append(container.NewTabItemWithIcon("提取(拖曳har文件到本窗口)", theme.ComputerIcon(), m.HarContainer(nw)))
