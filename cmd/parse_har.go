@@ -60,7 +60,7 @@ func (m *Har) ParseHar(harFilePath string) (exportPath string, err error) {
 			continue
 		}
 		parsedURLPath := strings.ReplaceAll(parsedURL.Path[1:], "/", "_")
-		if strings.Contains(ext, ".jsc") || strings.Contains(ext, ".js") || strings.Contains(ext, ".sc") {
+		if strings.Contains(parsedURL.Path, ".jsc") || strings.Contains(parsedURL.Path, ".js") || strings.Contains(parsedURL.Path, ".sc") || strings.Contains(parsedURL.Path, ".html") {
 			if util.InArray(requestURL, staticURLList) == false {
 				staticURLList = append(staticURLList, requestURL)
 			}
